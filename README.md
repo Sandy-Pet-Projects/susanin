@@ -12,8 +12,8 @@
 
 ## Структура папок проекта
 
-- `backend.net` - исходники backend-сервисов на .NET
 - `devops` - настройки CI/CD
   - `docker-compose` - настройки для локального запуска окружения и сервисов
 - `docs` - документация к проекту
-- `frontend.react` - исходники frontend'а на React
+- `susanin.net` - исходники backend-сервисов на .NET
+- `susanin.react` - исходники frontend'а на React
