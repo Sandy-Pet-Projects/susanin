@@ -11,6 +11,9 @@
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="andToxa.StyleCop" Version="1.0.8" />
+        <PackageReference Include="andToxa.StyleCop" Version="1.0.9" />
     </ItemGroup>
+    <Target Name="CheckBlockedPackages" AfterTargets="ResolvePackageDependenciesForBuild">
+        <Error Code="420" Text="Blocked package dependency detected: %(PackageDependencies.Identity)" Condition="'%(PackageDependencies.Identity)' == 'Devlooped.SponsorLink'"/> <!--spyware: https://github.com/moq/moq/issues/1372-->
+    </Target>
 </Project>
