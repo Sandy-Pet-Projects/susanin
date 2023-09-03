@@ -10,9 +10,9 @@ public interface IDomainEntity<T>
     where T : IDomainEntity<T>
 {
     /// <summary>
-    /// <see cref="Id{T}"/>
+    /// <see cref="EntityId{T}"/>
     /// </summary>
-    public Id<T> Id { get; }
+    public EntityId<T> Id { get; }
 
     /// <summary>
     /// <see cref="IDomainEntityProjection{T}"/>

@@ -5,24 +5,24 @@ namespace Common.Domain.Types;
 
 /// <summary>Идентификатор сущности</summary>
 /// <typeparam name="T">Тип Сущности</typeparam>
-public record Id<T>
+public record EntityId<T>
     where T : IDomainEntity<T>
 {
     private readonly Guid _guid;
 
     /// <summary>
-    /// Конструктор <see cref="Id{T}"/>
+    /// Конструктор <see cref="EntityId{T}"/>
     /// </summary>
-    public Id()
+    public EntityId()
     {
         _guid = Guid.NewGuid();
     }
 
     /// <summary>
-    /// Конструктор <see cref="Id{T}"/>
+    /// Конструктор <see cref="EntityId{T}"/>
     /// </summary>
     /// <param name="guid"><see cref="Guid"/></param>
-    public Id(Guid guid)
+    public EntityId(Guid guid)
     {
         _guid = guid;
     }
