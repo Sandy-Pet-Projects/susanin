@@ -1,4 +1,5 @@
 ﻿using Common.Domain.Types;
+using System.Collections.Generic;
 
 namespace Common.Domain.Interfaces;
 
@@ -15,7 +16,7 @@ public interface IDomainEntity<T>
     public EntityId<T> Id { get; }
 
     /// <summary>
-    /// <see cref="IDomainEntityProjection{T}"/>
+    /// Коллекция событий <see cref="IDomainEvent{T}"/>
     /// </summary>
-    public IDomainEntityProjection<T> State { get; }
+    public IReadOnlyCollection<IDomainEvent<T>> Events { get; }
 }

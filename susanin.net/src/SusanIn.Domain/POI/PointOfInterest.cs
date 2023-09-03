@@ -14,7 +14,10 @@ public class PointOfInterest : IDomainEntity<PointOfInterest>
     private PointOfInterest(EntityId<PointOfInterest> id)
     {
         Id = id;
-        var created = new Events.Created(id);
+        var created = new Events.Created()
+        {
+            EntityId = id,
+        };
         State = new PointOfInterestState(new[] { created });
         _events.Add(created);
     }
@@ -22,8 +25,13 @@ public class PointOfInterest : IDomainEntity<PointOfInterest>
     /// <inheritdoc cref="IDomainEntity{T}.Id"/>
     public EntityId<PointOfInterest> Id { get; }
 
-    /// <inheritdoc />
-    public IDomainEntityProjection<PointOfInterest> State { get; }
+    /// <inheritdoc cref="IDomainEntity{T}.Events"/>
+    public IReadOnlyCollection<IDomainEvent<PointOfInterest>> Events => _events.AsReadOnly();
+
+    /// <summary>
+    /// Текущее состояние <see cref="PointOfInterest"/>
+    /// </summary>
+    public PointOfInterestState State { get; }
 
     /// <summary>
     /// Создание <see cref="PointOfInterest"/>
@@ -33,5 +41,24 @@ public class PointOfInterest : IDomainEntity<PointOfInterest>
     public static PointOfInterest Create(EntityId<PointOfInterest>? id = default)
     {
         return new PointOfInterest(id ?? new EntityId<PointOfInterest>());
+    }
+
+    /// <summary>
+    /// Переимновать <see cref="PointOfInterest"/>
+    /// </summary>
+    /// <param name="newName">Новое имя <see cref="PointOfInterest"/></param>
+    // todo вместо string использовать пользовательский тип
+    public void RenameTo(string newName)
+    {
+        if (newName != State.Name)
+        {
+            var renamed = new Events.Renamed()
+            {
+                OldName = State.Name,
+                NewName = newName,
+            };
+            State.Apply(renamed);
+            _events.Add(renamed);
+        }
     }
 }

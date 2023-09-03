@@ -25,6 +25,11 @@ public class PointOfInterestState : IDomainEntityProjection<PointOfInterest>
     /// <inheritdoc cref="IDomainEntityProjection{T}.Id"/>
     public EntityId<PointOfInterest> Id { get; private set; } = null!;
 
+    /// <summary>
+    /// Наименование <see cref="PointOfInterest"/>
+    /// </summary>
+    public string? Name { get; private set; }
+
     /// <inheritdoc />
     public void Apply(IDomainEvent<PointOfInterest> @event)
     {
@@ -33,6 +38,9 @@ public class PointOfInterestState : IDomainEntityProjection<PointOfInterest>
         {
             case Events.Created created:
                 Id = created.EntityId;
+                break;
+            case Events.Renamed renamed:
+                Name = renamed.NewName;
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(@event));
