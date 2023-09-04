@@ -2,7 +2,7 @@
 using Common.Domain.Types;
 using System.Collections.Generic;
 
-namespace SusanIn.Domain.POI;
+namespace SusanIn.POI.Domain.Models;
 
 /// <summary>
 /// Point of interest

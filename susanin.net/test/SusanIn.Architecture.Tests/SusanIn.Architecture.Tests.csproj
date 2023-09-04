@@ -24,4 +24,10 @@
         </PackageReference>
     </ItemGroup>
 
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\src\Common.Domain\Common.Domain.csproj" />
+      <ProjectReference Include="..\..\src\SusanIn.POI.Domain\SusanIn.POI.Domain.csproj" />
+    </ItemGroup>
+
 </Project>

@@ -1,8 +1,8 @@
 ﻿using FluentAssertions;
-using SusanIn.Domain.POI;
+using SusanIn.POI.Domain.Models;
 using Xunit;
 
-namespace SusanIn.Domain.Tests.POI;
+namespace SusanIn.POI.Domain.Tests.POI;
 
 /// <summary>
 /// Тесты <see cref="PointOfInterest"/>

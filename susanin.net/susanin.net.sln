@@ -11,11 +11,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{B18484EB-C6A
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{4F95E3CB-A843-4756-B17D-3D22BBFDFD57}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SusanIn.Domain", "src\SusanIn.Domain\SusanIn.Domain.csproj", "{EEDC16D7-A93D-4AB9-82AF-574D30926A6B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SusanIn.POI.Domain", "src\SusanIn.POI.Domain\SusanIn.POI.Domain.csproj", "{EEDC16D7-A93D-4AB9-82AF-574D30926A6B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SusanIn.Domain.Tests", "test\SusanIn.Domain.Tests\SusanIn.Domain.Tests.csproj", "{675F40A8-117E-4DAD-A5F9-F083CE0D23F7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SusanIn.POI.Domain.Tests", "test\SusanIn.POI.Domain.Tests\SusanIn.POI.Domain.Tests.csproj", "{675F40A8-117E-4DAD-A5F9-F083CE0D23F7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Susanin.Architecture.Tests", "test\Susanin.Architecture.Tests\Susanin.Architecture.Tests.csproj", "{9A67F7DE-D006-4A72-BD1D-D99A4ACDE414}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SusanIn.Architecture.Tests", "test\SusanIn.Architecture.Tests\SusanIn.Architecture.Tests.csproj", "{9A67F7DE-D006-4A72-BD1D-D99A4ACDE414}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Domain", "src\Common.Domain\Common.Domain.csproj", "{DD153A6D-33FC-4886-8124-71DAB8E4D8D9}"
 EndProject

@@ -3,7 +3,7 @@ using Common.Domain.Types;
 using System;
 using System.Collections.Generic;
 
-namespace SusanIn.Domain.POI;
+namespace SusanIn.POI.Domain.Models;
 
 /// <summary>
 /// Состояний <see cref="PointOfInterest"/>

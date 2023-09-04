@@ -2,7 +2,7 @@
 using Common.Domain.Types;
 using System;
 
-namespace SusanIn.Domain.POI;
+namespace SusanIn.POI.Domain.Models;
 
 /// <summary>
 /// События POI
