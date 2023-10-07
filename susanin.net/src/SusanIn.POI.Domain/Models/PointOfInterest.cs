@@ -18,7 +18,7 @@ public class PointOfInterest : IDomainEntity<PointOfInterest>
         {
             EntityId = id,
         };
-        State = new PointOfInterestState(new[] { created });
+        State = PointOfInterestState.Create(new[] { created });
         _events.Add(created);
     }
 

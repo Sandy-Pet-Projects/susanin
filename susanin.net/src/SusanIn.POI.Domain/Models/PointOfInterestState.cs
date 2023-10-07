@@ -8,29 +8,47 @@ namespace SusanIn.POI.Domain.Models;
 /// <summary>
 /// Состояний <see cref="PointOfInterest"/>
 /// </summary>
-public class PointOfInterestState : IDomainEntityProjection<PointOfInterest>
+public class PointOfInterestState
 {
-    /// <summary>
-    /// Конструктор <see cref="PointOfInterestState"/>
-    /// </summary>
-    /// <param name="events">Коллекция <see cref="IDomainEvent{T}"/></param>
-    public PointOfInterestState(IEnumerable<IDomainEvent<PointOfInterest>> events)
+    private PointOfInterestState()
     {
-        foreach (var @event in events)
-        {
-            Apply(@event);
-        }
     }
 
-    /// <inheritdoc cref="IDomainEntityProjection{T}.Id"/>
+    /// <summary>
+    /// <see cref="EntityId{T}"/>
+    /// </summary>
     public EntityId<PointOfInterest> Id { get; private set; } = null!;
 
     /// <summary>
     /// Наименование <see cref="PointOfInterest"/>
     /// </summary>
-    public string? Name { get; private set; }
+    public string Name { get; private set; } = null!;
 
-    /// <inheritdoc />
+    /// <summary>
+    /// <see cref="GeoCoordinate"/>
+    /// </summary>
+    public GeoCoordinate Coordinate { get; private set; } = null!;
+
+    /// <summary>
+    /// Конструктор
+    /// </summary>
+    /// <param name="events">Коллекция <see cref="IDomainEvent{T}"/></param>
+    /// <returns><see cref="PointOfInterestState"/></returns>
+    public static PointOfInterestState Create(IEnumerable<IDomainEvent<PointOfInterest>> events)
+    {
+        var state = new PointOfInterestState();
+        foreach (var @event in events)
+        {
+            state.Apply(@event);
+        }
+
+        return state;
+    }
+
+    /// <summary>
+    /// Применение события <see cref="IDomainEvent{T}"/>
+    /// </summary>
+    /// <param name="event"><see cref="IDomainEvent{T}"/></param>
     public void Apply(IDomainEvent<PointOfInterest> @event)
     {
         // todo Сделать как у Владика с динамическими методами
