@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Common.Domain.Types;
+namespace Common.Domain.ValueObjects;
 
 /// <summary>
 /// Географические координаты

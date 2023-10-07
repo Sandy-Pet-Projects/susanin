@@ -1,5 +1,6 @@
 ﻿using Common.Domain.Interfaces;
 using Common.Domain.Types;
+using Common.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
 
@@ -8,17 +9,8 @@ namespace SusanIn.POI.Domain.Models;
 /// <summary>
 /// Состояний <see cref="PointOfInterest"/>
 /// </summary>
-public class PointOfInterestState
+public sealed class PointOfInterestState : EntityState<PointOfInterest>
 {
-    private PointOfInterestState()
-    {
-    }
-
-    /// <summary>
-    /// <see cref="EntityId{T}"/>
-    /// </summary>
-    public EntityId<PointOfInterest> Id { get; private set; } = null!;
-
     /// <summary>
     /// Наименование <see cref="PointOfInterest"/>
     /// </summary>
@@ -45,11 +37,8 @@ public class PointOfInterestState
         return state;
     }
 
-    /// <summary>
-    /// Применение события <see cref="IDomainEvent{T}"/>
-    /// </summary>
-    /// <param name="event"><see cref="IDomainEvent{T}"/></param>
-    public void Apply(IDomainEvent<PointOfInterest> @event)
+    /// <inheritdoc />
+    public override void Apply(IDomainEvent<PointOfInterest> @event)
     {
         // todo Сделать как у Владика с динамическими методами
         switch (@event)

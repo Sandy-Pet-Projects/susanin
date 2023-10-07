@@ -28,5 +28,7 @@ public class PointOfInterestTests
         // todo перенести в тесты стейта
         pointOfInterest.Id
             .Should().Be(pointOfInterest.State.Id);
+        pointOfInterest.State.Name
+            .Should().Be("new name");
     }
 }
