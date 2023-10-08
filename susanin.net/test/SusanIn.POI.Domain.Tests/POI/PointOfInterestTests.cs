@@ -1,5 +1,4 @@
-﻿using Common.Domain.Types;
-using FluentAssertions;
+﻿using FluentAssertions;
 using SusanIn.POI.Domain.Models;
 using Xunit;
 

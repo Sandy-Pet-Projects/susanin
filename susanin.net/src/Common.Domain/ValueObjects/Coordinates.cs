@@ -5,15 +5,15 @@ namespace Common.Domain.ValueObjects;
 /// <summary>
 /// Географические координаты
 /// </summary>
-public record GeoCoordinate
+public record Coordinates
 {
     /// <summary>
-    /// Конструктор <see cref="GeoCoordinate"/>
+    /// Конструктор <see cref="Coordinates"/>
     /// </summary>
     /// <param name="latitude"><see cref="Latitude"/></param>
     /// <param name="longitude"><see cref="Longitude"/></param>
     /// <exception cref="ArgumentException">Исключение при некорректных входных параметрах</exception>
-    public GeoCoordinate(double latitude, double longitude)
+    public Coordinates(double latitude, double longitude)
     {
         if (latitude is < -90 or > 90)
         {

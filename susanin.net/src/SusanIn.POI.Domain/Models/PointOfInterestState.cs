@@ -21,9 +21,9 @@ public sealed class PointOfInterestState : EntityState<PointOfInterest>
     public string Name { get; private set; } = null!;
 
     /// <summary>
-    /// <see cref="GeoCoordinate"/>
+    /// <see cref="Coordinates"/>
     /// </summary>
-    public GeoCoordinate Coordinate { get; private set; } = null!;
+    public Coordinates Coordinate { get; private set; } = null!;
 
     /// <summary>
     /// Создание <see cref="PointOfInterestState"/>

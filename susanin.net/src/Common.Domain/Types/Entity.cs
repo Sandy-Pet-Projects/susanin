@@ -14,9 +14,10 @@ public abstract class Entity<T>
     /// <summary>
     /// Конструктор <see cref="Entity{T}"/>
     /// </summary>
-    protected Entity()
+    /// <param name="id"><see cref="EntityId{T}"/></param>
+    protected Entity(EntityId<T>? id = default)
     {
-        Id = new EntityId<T>();
+        Id = id ?? new EntityId<T>();
     }
 
     /// <summary>
