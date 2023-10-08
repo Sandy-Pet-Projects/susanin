@@ -1,12 +1,11 @@
-﻿using Common.Domain.Interfaces;
-using System;
+﻿using System;
 
 namespace Common.Domain.Types;
 
 /// <summary>Идентификатор сущности</summary>
 /// <typeparam name="T">Тип Сущности</typeparam>
 public record EntityId<T>
-    where T : IDomainEntity<T>
+    where T : Entity<T>
 {
     private readonly Guid _guid;
 

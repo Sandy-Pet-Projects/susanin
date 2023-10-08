@@ -1,13 +1,11 @@
-﻿using Common.Domain.Interfaces;
-
-namespace Common.Domain.Types;
+﻿namespace Common.Domain.Types;
 
 /// <summary>
-/// Состояние <see cref="IDomainEntity{T}"/>
+/// Состояние <see cref="Entity{T}"/>
 /// </summary>
-/// <typeparam name="T">Тип сущности, см. <see cref="IDomainEntity{T}"/></typeparam>
+/// <typeparam name="T">Тип сущности, см. <see cref="Entity{T}"/></typeparam>
 public abstract class EntityState<T>
-    where T : IDomainEntity<T>
+    where T : Entity<T>
 {
     /// <summary>
     /// Конструктор <see cref="EntityState{T}"/>
@@ -17,13 +15,8 @@ public abstract class EntityState<T>
     }
 
     /// <summary>
-    /// <see cref="EntityId{T}"/>
+    /// Применение события <see cref="DomainEvent{T}"/>
     /// </summary>
-    public EntityId<T> Id { get; protected set; } = null!;
-
-    /// <summary>
-    /// Применение события <see cref="IDomainEvent{T}"/>
-    /// </summary>
-    /// <param name="event"><see cref="IDomainEvent{T}"/></param>
-    public abstract void Apply(IDomainEvent<T> @event);
+    /// <param name="event"><see cref="DomainEvent{T}"/></param>
+    public abstract void Apply(DomainEvent<T> @event);
 }

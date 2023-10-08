@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using Common.Domain.Types;
+using FluentAssertions;
 using SusanIn.POI.Domain.Models;
 using Xunit;
 
@@ -16,18 +17,17 @@ public class PointOfInterestTests
     public void PointOfInterestCreateTest()
     {
         // arrange
-        var pointOfInterest = PointOfInterest.Create();
+        var id = new EntityId<PointOfInterest>();
+        var pointOfInterest = PointOfInterest.Create(id);
 
         // act
         pointOfInterest.RenameTo("new name");
 
         // assert
-        pointOfInterest.Events
-            .Should().ContainSingle(@event => @event.GetType() == typeof(Events.Created));
+        pointOfInterest.Id
+            .Should().Be(id);
 
         // todo перенести в тесты стейта
-        pointOfInterest.Id
-            .Should().Be(pointOfInterest.State.Id);
         pointOfInterest.State.Name
             .Should().Be("new name");
     }

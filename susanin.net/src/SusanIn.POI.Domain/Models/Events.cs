@@ -1,6 +1,4 @@
-﻿using Common.Domain.Interfaces;
-using Common.Domain.Types;
-using System;
+﻿using Common.Domain.Types;
 
 namespace SusanIn.POI.Domain.Models;
 
@@ -12,19 +10,8 @@ public static class Events
     /// <summary>
     /// POI создана
     /// </summary>
-    public record Created : IDomainEvent<PointOfInterest>
+    public class Created : DomainEvent<PointOfInterest>
     {
-        /// <summary>
-        /// Конструктор <see cref="Created"/>
-        /// </summary>
-        public Created()
-        {
-            Id = Guid.NewGuid();
-        }
-
-        /// <inheritdoc cref="IDomainEvent{T}.Id"/>
-        public Guid Id { get; }
-
         /// <summary>
         /// <see cref="EntityId"/>
         /// </summary>
@@ -34,19 +21,8 @@ public static class Events
     /// <summary>
     /// POI переименована
     /// </summary>
-    public record Renamed : IDomainEvent<PointOfInterest>
+    public class Renamed : DomainEvent<PointOfInterest>
     {
-        /// <summary>
-        /// Конструктор <see cref="Renamed"/>
-        /// </summary>
-        public Renamed()
-        {
-            Id = Guid.NewGuid();
-        }
-
-        /// <inheritdoc cref="IDomainEvent{T}.Id"/>
-        public Guid Id { get; }
-
         /// <summary>
         /// Старое наименование
         /// </summary>

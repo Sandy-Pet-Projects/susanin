@@ -1,5 +1,4 @@
-﻿using Common.Domain.Interfaces;
-using Common.Domain.Types;
+﻿using Common.Domain.Types;
 using System.Collections.Generic;
 
 namespace SusanIn.POI.Domain.Models;
@@ -7,26 +6,20 @@ namespace SusanIn.POI.Domain.Models;
 /// <summary>
 /// Point of interest
 /// </summary>
-public class PointOfInterest : IDomainEntity<PointOfInterest>
+public class PointOfInterest : Entity<PointOfInterest>
 {
-    private readonly List<IDomainEvent<PointOfInterest>> _events = new List<IDomainEvent<PointOfInterest>>();
+    private readonly List<DomainEvent<PointOfInterest>> _events = new List<DomainEvent<PointOfInterest>>();
 
-    private PointOfInterest(EntityId<PointOfInterest> id)
+    private PointOfInterest(EntityId<PointOfInterest>? id = default)
+        : base(id)
     {
-        Id = id;
         var created = new Events.Created()
         {
-            EntityId = id,
+            EntityId = Id,
         };
         State = PointOfInterestState.Create(new[] { created });
         _events.Add(created);
     }
-
-    /// <inheritdoc cref="IDomainEntity{T}.Id"/>
-    public EntityId<PointOfInterest> Id { get; }
-
-    /// <inheritdoc cref="IDomainEntity{T}.Events"/>
-    public IReadOnlyCollection<IDomainEvent<PointOfInterest>> Events => _events.AsReadOnly();
 
     /// <summary>
     /// Текущее состояние <see cref="PointOfInterest"/>
@@ -40,7 +33,8 @@ public class PointOfInterest : IDomainEntity<PointOfInterest>
     /// <returns><see cref="PointOfInterest"/></returns>
     public static PointOfInterest Create(EntityId<PointOfInterest>? id = default)
     {
-        return new PointOfInterest(id ?? new EntityId<PointOfInterest>());
+        // todo добавить дополнительные проверки параметров создания сущности
+        return new PointOfInterest(id);
     }
 
     /// <summary>

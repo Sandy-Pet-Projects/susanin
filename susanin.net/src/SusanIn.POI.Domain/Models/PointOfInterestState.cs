@@ -1,5 +1,4 @@
-﻿using Common.Domain.Interfaces;
-using Common.Domain.Types;
+﻿using Common.Domain.Types;
 using Common.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
@@ -12,6 +11,11 @@ namespace SusanIn.POI.Domain.Models;
 public sealed class PointOfInterestState : EntityState<PointOfInterest>
 {
     /// <summary>
+    /// <see cref="EntityId{T}"/>
+    /// </summary>
+    public EntityId<PointOfInterest> Id { get; private set; } = null!;
+
+    /// <summary>
     /// Наименование <see cref="PointOfInterest"/>
     /// </summary>
     public string Name { get; private set; } = null!;
@@ -22,11 +26,11 @@ public sealed class PointOfInterestState : EntityState<PointOfInterest>
     public GeoCoordinate Coordinate { get; private set; } = null!;
 
     /// <summary>
-    /// Конструктор
+    /// Создание <see cref="PointOfInterestState"/>
     /// </summary>
-    /// <param name="events">Коллекция <see cref="IDomainEvent{T}"/></param>
+    /// <param name="events">Коллекция <see cref="DomainEvent{T}"/></param>
     /// <returns><see cref="PointOfInterestState"/></returns>
-    public static PointOfInterestState Create(IEnumerable<IDomainEvent<PointOfInterest>> events)
+    public static PointOfInterestState Create(IEnumerable<DomainEvent<PointOfInterest>> events)
     {
         var state = new PointOfInterestState();
         foreach (var @event in events)
@@ -38,7 +42,7 @@ public sealed class PointOfInterestState : EntityState<PointOfInterest>
     }
 
     /// <inheritdoc />
-    public override void Apply(IDomainEvent<PointOfInterest> @event)
+    public override void Apply(DomainEvent<PointOfInterest> @event)
     {
         // todo Сделать как у Владика с динамическими методами
         switch (@event)
