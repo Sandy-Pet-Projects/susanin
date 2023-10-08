@@ -5,7 +5,7 @@ namespace Common.Domain.Types;
 /// <summary>Идентификатор сущности</summary>
 /// <typeparam name="T">Тип Сущности</typeparam>
 public record EntityId<T>
-    where T : Entity<T>
+    where T : Entity<T>, new()
 {
     private readonly Guid _guid;
 

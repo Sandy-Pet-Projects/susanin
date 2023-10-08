@@ -17,16 +17,12 @@ public class PointOfInterestTests
     public void PointOfInterestCreateTest()
     {
         // arrange
-        var id = new EntityId<PointOfInterest>();
-        var pointOfInterest = PointOfInterest.Create(id);
+        var pointOfInterest = PointOfInterest.Create();
 
         // act
         pointOfInterest.RenameTo("new name");
 
         // assert
-        pointOfInterest.Id
-            .Should().Be(id);
-
         // todo перенести в тесты стейта
         pointOfInterest.State.Name
             .Should().Be("new name");

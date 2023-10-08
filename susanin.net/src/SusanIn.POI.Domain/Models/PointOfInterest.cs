@@ -1,5 +1,4 @@
 ﻿using Common.Domain.Types;
-using System.Collections.Generic;
 
 namespace SusanIn.POI.Domain.Models;
 
@@ -8,17 +7,18 @@ namespace SusanIn.POI.Domain.Models;
 /// </summary>
 public class PointOfInterest : Entity<PointOfInterest>
 {
-    private readonly List<DomainEvent<PointOfInterest>> _events = new List<DomainEvent<PointOfInterest>>();
-
-    private PointOfInterest(EntityId<PointOfInterest>? id = default)
-        : base(id)
+    /// <summary>
+    /// s3wer
+    /// </summary>
+    public PointOfInterest()
+        : base()
     {
         var created = new Events.Created()
         {
             EntityId = Id,
         };
         State = PointOfInterestState.Create(new[] { created });
-        _events.Add(created);
+        Events.Add(created);
     }
 
     /// <summary>
@@ -29,12 +29,12 @@ public class PointOfInterest : Entity<PointOfInterest>
     /// <summary>
     /// Создание <see cref="PointOfInterest"/>
     /// </summary>
-    /// <param name="id"><see cref="EntityId{T}"/></param>
     /// <returns><see cref="PointOfInterest"/></returns>
-    public static PointOfInterest Create(EntityId<PointOfInterest>? id = default)
+    public static PointOfInterest Create()
     {
         // todo добавить дополнительные проверки параметров создания сущности
-        return new PointOfInterest(id);
+        var pointOfInterest = new PointOfInterest();
+        return pointOfInterest;
     }
 
     /// <summary>
@@ -52,7 +52,13 @@ public class PointOfInterest : Entity<PointOfInterest>
                 NewName = newName,
             };
             State.Apply(renamed);
-            _events.Add(renamed);
+            Events.Add(renamed);
         }
+    }
+
+    /// <inheritdoc />
+    protected override void Apply(DomainEvent<PointOfInterest> @event)
+    {
+        State.Apply(@event);
     }
 }

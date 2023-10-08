@@ -7,7 +7,7 @@ namespace Common.Domain.Types;
 /// </summary>
 /// <typeparam name="T"><see cref="Entity{T}"/></typeparam>
 public abstract class DomainEvent<T>
-    where T : Entity<T>
+    where T : Entity<T>, new()
 {
     /// <summary>
     /// Конструктор <see cref="DomainEvent{T}"/>

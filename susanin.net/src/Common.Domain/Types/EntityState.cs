@@ -5,7 +5,7 @@
 /// </summary>
 /// <typeparam name="T">Тип сущности, см. <see cref="Entity{T}"/></typeparam>
 public abstract class EntityState<T>
-    where T : Entity<T>
+    where T : Entity<T>, new()
 {
     /// <summary>
     /// Конструктор <see cref="EntityState{T}"/>
