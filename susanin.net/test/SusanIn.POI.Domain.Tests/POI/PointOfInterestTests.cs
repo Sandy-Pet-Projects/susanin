@@ -5,6 +5,7 @@ using FluentAssertions;
 using NSubstitute;
 using SusanIn.POI.Domain.Models;
 using System.Collections.Generic;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -86,7 +87,7 @@ public class PointOfInterestTests
                         OldName = "initial name",
                         NewName = "qwe",
                     },
-                    System.Text.Json.JsonSerializer.Deserialize<PointOfInterestEvents.PointOfInterestRenamed>("""{"Id": "6ac195ef-30ea-4c0c-8179-592cdb61a75f", "EntityId": "0307bc5b-0729-4545-a40f-789862040b8c", "OldName": "initial name", "NewName": "qwe"}""")!,
+                    JsonSerializer.Deserialize<PointOfInterestEvents.PointOfInterestRenamed>("""{"Id": "6ac195ef-30ea-4c0c-8179-592cdb61a75f", "EntityId": "0307bc5b-0729-4545-a40f-789862040b8c", "OldName": "initial name", "NewName": "qwe", "CreatedAt": "2023-10-11"}""")!,
                 };
                 return domainEvents;
             });

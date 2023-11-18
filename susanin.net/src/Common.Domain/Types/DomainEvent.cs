@@ -1,5 +1,6 @@
 ﻿using Common.Domain.Interfaces;
 using System;
+using System.Text.Json.Serialization;
 
 namespace Common.Domain.Types;
 
@@ -11,18 +12,10 @@ public abstract class DomainEvent<T>
     where T : IEntity<T>
 {
     /// <summary>
-    /// Конструктор <see cref="DomainEvent{T}"/>
-    /// </summary>
-    /// <param name="id">Идентификатор события</param>
-    protected DomainEvent(Id<DomainEvent<T>>? id = default)
-    {
-        Id = id ?? new Id<DomainEvent<T>>(Guid.NewGuid());
-    }
-
-    /// <summary>
     /// Идентификатор события
     /// </summary>
-    public Id<DomainEvent<T>> Id { get; }
+    [JsonInclude]
+    public Id<DomainEvent<T>> Id { get; private init; } = new Id<DomainEvent<T>>(Guid.NewGuid());
 
     /// <summary>
     /// <see cref="Id{T}"/>
@@ -32,5 +25,6 @@ public abstract class DomainEvent<T>
     /// <summary>
     /// Время создания события
     /// </summary>
-    public DateTimeOffset CreatedAt { get; } = DateTimeOffset.UtcNow;
+    [JsonInclude]
+    public DateTimeOffset CreatedAt { get; private init; } = DateTimeOffset.UtcNow;
 }
