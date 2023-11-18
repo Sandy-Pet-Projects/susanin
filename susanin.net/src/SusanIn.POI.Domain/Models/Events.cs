@@ -1,4 +1,6 @@
 ﻿using Common.Domain.Types;
+using Common.Domain.ValueObjects;
+using System;
 
 namespace SusanIn.POI.Domain.Models;
 
@@ -16,6 +18,21 @@ public static class Events
         /// <see cref="EntityId"/>
         /// </summary>
         public required EntityId<PointOfInterest> EntityId { get; init; }
+
+        /// <summary>
+        /// Наименование <see cref="PointOfInterest"/>
+        /// </summary>
+        public required string Name { get; init; }
+
+        /// <summary>
+        /// <see cref="Coordinates"/>
+        /// </summary>
+        public required Coordinates Coordinate { get; init; }
+
+        /// <summary>
+        /// Время создания события
+        /// </summary>
+        public DateTimeOffset CreatedAt { get; } = DateTimeOffset.UtcNow;
     }
 
     /// <summary>

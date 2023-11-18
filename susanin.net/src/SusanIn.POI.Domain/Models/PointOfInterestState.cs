@@ -1,19 +1,26 @@
-﻿using Common.Domain.Types;
+﻿using Common.Domain.Interfaces;
+using Common.Domain.Types;
 using Common.Domain.ValueObjects;
 using System;
-using System.Collections.Generic;
 
 namespace SusanIn.POI.Domain.Models;
 
 /// <summary>
 /// Состояний <see cref="PointOfInterest"/>
 /// </summary>
-public sealed class PointOfInterestState : EntityState<PointOfInterest>
+public sealed class PointOfInterestState : IEntityState<PointOfInterest>
 {
     /// <summary>
-    /// <see cref="EntityId{T}"/>
+    /// Конструктор <see cref="PointOfInterestState"/>
     /// </summary>
-    public EntityId<PointOfInterest> Id { get; private set; } = null!;
+    /// <param name="id"><see cref="EntityId{T}"/></param>
+    public PointOfInterestState(EntityId<PointOfInterest> id)
+    {
+        Id = id;
+    }
+
+    /// <inheritdoc />
+    public EntityId<PointOfInterest> Id { get; private set; }
 
     /// <summary>
     /// Наименование <see cref="PointOfInterest"/>
@@ -25,36 +32,33 @@ public sealed class PointOfInterestState : EntityState<PointOfInterest>
     /// </summary>
     public Coordinates Coordinate { get; private set; } = null!;
 
-    /// <summary>
-    /// Создание <see cref="PointOfInterestState"/>
-    /// </summary>
-    /// <param name="events">Коллекция <see cref="DomainEvent{T}"/></param>
-    /// <returns><see cref="PointOfInterestState"/></returns>
-    public static PointOfInterestState Create(IEnumerable<DomainEvent<PointOfInterest>> events)
-    {
-        var state = new PointOfInterestState();
-        foreach (var @event in events)
-        {
-            state.Apply(@event);
-        }
-
-        return state;
-    }
-
     /// <inheritdoc />
-    public override void Apply(DomainEvent<PointOfInterest> @event)
+    public void Apply(DomainEvent<PointOfInterest> @event)
     {
         // todo Сделать как у Владика с динамическими методами
         switch (@event)
         {
             case Events.Created created:
                 Id = created.EntityId;
+                Name = created.Name;
+                Coordinate = created.Coordinate;
                 break;
             case Events.Renamed renamed:
                 Name = renamed.NewName;
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(@event));
+        }
+    }
+
+    /// <inheritdoc cref="IEntityState{T}.Validate"/>
+    public void Validate()
+    {
+        if (Id == null
+            || Name == null
+            || Coordinate == null)
+        {
+            throw new Exception();
         }
     }
 }

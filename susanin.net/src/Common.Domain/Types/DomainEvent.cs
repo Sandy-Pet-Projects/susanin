@@ -1,13 +1,14 @@
-﻿using System;
+﻿using Common.Domain.Interfaces;
+using System;
 
 namespace Common.Domain.Types;
 
 /// <summary>
 /// Доменное событие
 /// </summary>
-/// <typeparam name="T"><see cref="Entity{T}"/></typeparam>
+/// <typeparam name="T"><see cref="IEntity{T}"/></typeparam>
 public abstract class DomainEvent<T>
-    where T : Entity<T>, new()
+    where T : IEntity<T>
 {
     /// <summary>
     /// Конструктор <see cref="DomainEvent{T}"/>

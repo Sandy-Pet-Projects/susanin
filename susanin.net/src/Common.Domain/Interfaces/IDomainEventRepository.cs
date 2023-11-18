@@ -7,9 +7,9 @@ namespace Common.Domain.Interfaces;
 /// <summary>
 /// Репозиторий <see cref="DomainEvent{T}"/>
 /// </summary>
-/// <typeparam name="T"><see cref="Entity{T}"/></typeparam>
+/// <typeparam name="T"><see cref="IEntity{T}"/></typeparam>
 public interface IDomainEventRepository<T>
-    where T : Entity<T>, new()
+    where T : IEntity<T>
 {
     /// <summary>
     /// Загрузка коллекции <see cref="DomainEvent{T}"/> из хранилища

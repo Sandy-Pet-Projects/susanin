@@ -1,40 +1,93 @@
-﻿using Common.Domain.Types;
+﻿using Common.Domain.Interfaces;
+using Common.Domain.Types;
+using Common.Domain.ValueObjects;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace SusanIn.POI.Domain.Models;
 
 /// <summary>
 /// Point of interest
 /// </summary>
-public class PointOfInterest : Entity<PointOfInterest>
+public class PointOfInterest : IEntity<PointOfInterest>
 {
     /// <summary>
-    /// s3wer
+    /// Конструктор <see cref="PointOfInterest"/>
     /// </summary>
-    public PointOfInterest()
-        : base()
+    /// <param name="id"><see cref="EntityId{T}"/></param>
+    private PointOfInterest(EntityId<PointOfInterest> id)
     {
-        var created = new Events.Created()
-        {
-            EntityId = Id,
-        };
-        State = PointOfInterestState.Create(new[] { created });
-        Events.Add(created);
+        Id = id;
+        State = new PointOfInterestState(Id);
+        Events = new List<DomainEvent<PointOfInterest>>();
     }
 
+    /// <inheritdoc />
+    public EntityId<PointOfInterest> Id { get; }
+
     /// <summary>
-    /// Текущее состояние <see cref="PointOfInterest"/>
+    /// <see cref="PointOfInterestState"/>
     /// </summary>
-    public PointOfInterestState State { get; }
+    public PointOfInterestState State { get; private set; }
+
+    /// <summary>
+    /// Коллекция <see cref="DomainEvent{T}"/>
+    /// </summary>
+    private List<DomainEvent<PointOfInterest>> Events { get; }
 
     /// <summary>
     /// Создание <see cref="PointOfInterest"/>
     /// </summary>
+    /// <param name="id"><see cref="EntityId{T}"/></param>
+    /// <param name="name">Наименование <see cref="PointOfInterest"/></param>
+    /// <param name="coordinates"><see cref="Coordinates"/></param>
     /// <returns><see cref="PointOfInterest"/></returns>
-    public static PointOfInterest Create()
+    public static PointOfInterest Create(EntityId<PointOfInterest> id, string name, Coordinates coordinates)
     {
         // todo добавить дополнительные проверки параметров создания сущности
-        var pointOfInterest = new PointOfInterest();
+        var pointOfInterest = new PointOfInterest(id);
+
+        var created = new Events.Created()
+        {
+            EntityId = pointOfInterest.Id,
+            Name = name,
+            Coordinate = coordinates,
+        };
+        pointOfInterest.Events.Add(created);
+
+        pointOfInterest.State = new PointOfInterestState(pointOfInterest.Id);
+        pointOfInterest.State.Apply(created);
+        pointOfInterest.State.Validate();
+
         return pointOfInterest;
+    }
+
+    /// <summary>
+    /// Загрузка <see cref="IEntity{T}"/> из хранилища
+    /// </summary>
+    /// <param name="repository"><see cref="IDomainEventRepository{T}"/></param>
+    /// <param name="id"><see cref="EntityId{T}"/></param>
+    /// <returns><see cref="IEntity{T}"/></returns>
+    public static PointOfInterest Load(IDomainEventRepository<PointOfInterest> repository, EntityId<PointOfInterest> id)
+    {
+        var entity = new PointOfInterest(id);
+        var events = repository.Load(id);
+        foreach (var @event in events)
+        {
+            entity.Apply(@event);
+        }
+
+        return entity;
+    }
+
+    /// <summary>
+    /// Сохранение <see cref="IEntity{T}"/> в хранилище
+    /// </summary>
+    /// <param name="repository"><see cref="IDomainEventRepository{T}"/></param>
+    /// <returns><see cref="Task"/></returns>
+    public async Task SaveAsync(IDomainEventRepository<PointOfInterest> repository)
+    {
+        await repository.SaveAsync(Id, Events);
     }
 
     /// <summary>
@@ -56,8 +109,11 @@ public class PointOfInterest : Entity<PointOfInterest>
         }
     }
 
-    /// <inheritdoc />
-    protected override void Apply(DomainEvent<PointOfInterest> @event)
+    /// <summary>
+    /// Применение события <see cref="DomainEvent{T}"/>
+    /// </summary>
+    /// <param name="event"><see cref="DomainEvent{T}"/></param>
+    private void Apply(DomainEvent<PointOfInterest> @event)
     {
         State.Apply(@event);
     }
