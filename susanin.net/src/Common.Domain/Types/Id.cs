@@ -1,28 +1,30 @@
-﻿using Common.Domain.Interfaces;
+﻿using Common.Domain.Types.Converters;
 using System;
+using System.Text.Json.Serialization;
 
 namespace Common.Domain.Types;
 
 /// <summary>Идентификатор сущности</summary>
 /// <typeparam name="T">Тип Сущности</typeparam>
-public record EntityId<T>
-    where T : IEntity<T>
+// todo можно ли обойтись без атрибута?
+[JsonConverter(typeof(IdJsonConverterFactory))]
+public record Id<T>
 {
     private readonly Guid _guid;
 
     /// <summary>
-    /// Конструктор <see cref="EntityId{T}"/>
+    /// Конструктор <see cref="Id{T}"/>
     /// </summary>
-    public EntityId()
+    public Id()
     {
         _guid = Guid.NewGuid();
     }
 
     /// <summary>
-    /// Конструктор <see cref="EntityId{T}"/>
+    /// Конструктор <see cref="Id{T}"/>
     /// </summary>
     /// <param name="guid"><see cref="Guid"/></param>
-    public EntityId(Guid guid)
+    public Id(Guid guid)
     {
         _guid = guid;
     }
@@ -39,6 +41,6 @@ public record EntityId<T>
     /// <returns><see cref="Guid"/></returns>
     public Guid ToGuid()
     {
-        return Guid.Parse(_guid.ToString());
+        return _guid;
     }
 }

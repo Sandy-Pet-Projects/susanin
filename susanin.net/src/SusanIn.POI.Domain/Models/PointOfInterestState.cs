@@ -10,17 +10,8 @@ namespace SusanIn.POI.Domain.Models;
 /// </summary>
 public sealed class PointOfInterestState : IEntityState<PointOfInterest>
 {
-    /// <summary>
-    /// Конструктор <see cref="PointOfInterestState"/>
-    /// </summary>
-    /// <param name="id"><see cref="EntityId{T}"/></param>
-    public PointOfInterestState(EntityId<PointOfInterest> id)
-    {
-        Id = id;
-    }
-
     /// <inheritdoc />
-    public EntityId<PointOfInterest> Id { get; private set; }
+    public Id<PointOfInterest> Id { get; private set; } = null!;
 
     /// <summary>
     /// Наименование <see cref="PointOfInterest"/>
@@ -38,12 +29,12 @@ public sealed class PointOfInterestState : IEntityState<PointOfInterest>
         // todo Сделать как у Владика с динамическими методами
         switch (@event)
         {
-            case Events.Created created:
+            case PointOfInterestEvents.PointOfInterestCreated created:
                 Id = created.EntityId;
                 Name = created.Name;
                 Coordinate = created.Coordinate;
                 break;
-            case Events.Renamed renamed:
+            case PointOfInterestEvents.PointOfInterestRenamed renamed:
                 Name = renamed.NewName;
                 break;
             default:

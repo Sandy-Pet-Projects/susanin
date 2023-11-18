@@ -14,16 +14,16 @@ public interface IDomainEventRepository<T>
     /// <summary>
     /// Загрузка коллекции <see cref="DomainEvent{T}"/> из хранилища
     /// </summary>
-    /// <param name="id"><see cref="EntityId{T}"/></param>
+    /// <param name="id"><see cref="Id{T}"/></param>
     /// <returns>Коллекция <see cref="DomainEvent{T}"/></returns>
-    public IEnumerable<DomainEvent<T>> Load(EntityId<T> id);
+    public Task<IEnumerable<DomainEvent<T>>> LoadAsync(Id<T> id);
 
     /// <summary>
     /// Сохранение коллекции <see cref="DomainEvent{T}"/> в хранилище
     /// </summary>
-    /// <param name="id"><see cref="EntityId{T}"/></param>
+    /// <param name="id"><see cref="Id{T}"/></param>
     /// <param name="events">Коллекция <see cref="DomainEvent{T}"/></param>
     /// <returns><see cref="Task{TResult}"/></returns>
     // todo добавить версию сущности
-    public Task SaveAsync(EntityId<T> id, IEnumerable<DomainEvent<T>> events);
+    public Task SaveAsync(Id<T> id, IEnumerable<DomainEvent<T>> events);
 }

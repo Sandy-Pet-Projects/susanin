@@ -14,21 +14,21 @@ public class PointOfInterest : IEntity<PointOfInterest>
     /// <summary>
     /// Конструктор <see cref="PointOfInterest"/>
     /// </summary>
-    /// <param name="id"><see cref="EntityId{T}"/></param>
-    private PointOfInterest(EntityId<PointOfInterest> id)
+    /// <param name="id"><see cref="Id{T}"/></param>
+    private PointOfInterest(Id<PointOfInterest> id)
     {
         Id = id;
-        State = new PointOfInterestState(Id);
+        State = new PointOfInterestState();
         Events = new List<DomainEvent<PointOfInterest>>();
     }
 
     /// <inheritdoc />
-    public EntityId<PointOfInterest> Id { get; }
+    public Id<PointOfInterest> Id { get; }
 
     /// <summary>
     /// <see cref="PointOfInterestState"/>
     /// </summary>
-    public PointOfInterestState State { get; private set; }
+    public PointOfInterestState State { get; }
 
     /// <summary>
     /// Коллекция <see cref="DomainEvent{T}"/>
@@ -38,25 +38,24 @@ public class PointOfInterest : IEntity<PointOfInterest>
     /// <summary>
     /// Создание <see cref="PointOfInterest"/>
     /// </summary>
-    /// <param name="id"><see cref="EntityId{T}"/></param>
+    /// <param name="id"><see cref="Id{T}"/></param>
     /// <param name="name">Наименование <see cref="PointOfInterest"/></param>
     /// <param name="coordinates"><see cref="Coordinates"/></param>
     /// <returns><see cref="PointOfInterest"/></returns>
-    public static PointOfInterest Create(EntityId<PointOfInterest> id, string name, Coordinates coordinates)
+    public static PointOfInterest Create(Id<PointOfInterest> id, string name, Coordinates coordinates)
     {
         // todo добавить дополнительные проверки параметров создания сущности
         var pointOfInterest = new PointOfInterest(id);
 
-        var created = new Events.Created()
+        var pointOfInterestCreated = new PointOfInterestEvents.PointOfInterestCreated()
         {
             EntityId = pointOfInterest.Id,
             Name = name,
             Coordinate = coordinates,
         };
-        pointOfInterest.Events.Add(created);
+        pointOfInterest.Events.Add(pointOfInterestCreated);
 
-        pointOfInterest.State = new PointOfInterestState(pointOfInterest.Id);
-        pointOfInterest.State.Apply(created);
+        pointOfInterest.State.Apply(pointOfInterestCreated);
         pointOfInterest.State.Validate();
 
         return pointOfInterest;
@@ -66,12 +65,12 @@ public class PointOfInterest : IEntity<PointOfInterest>
     /// Загрузка <see cref="IEntity{T}"/> из хранилища
     /// </summary>
     /// <param name="repository"><see cref="IDomainEventRepository{T}"/></param>
-    /// <param name="id"><see cref="EntityId{T}"/></param>
+    /// <param name="id"><see cref="Id{T}"/></param>
     /// <returns><see cref="IEntity{T}"/></returns>
-    public static PointOfInterest Load(IDomainEventRepository<PointOfInterest> repository, EntityId<PointOfInterest> id)
+    public static async Task<PointOfInterest> LoadAsync(IDomainEventRepository<PointOfInterest> repository, Id<PointOfInterest> id)
     {
         var entity = new PointOfInterest(id);
-        var events = repository.Load(id);
+        var events = await repository.LoadAsync(id);
         foreach (var @event in events)
         {
             entity.Apply(@event);
@@ -99,13 +98,14 @@ public class PointOfInterest : IEntity<PointOfInterest>
     {
         if (newName != State.Name)
         {
-            var renamed = new Events.Renamed()
+            var pointOfInterestRenamed = new PointOfInterestEvents.PointOfInterestRenamed()
             {
+                EntityId = Id,
                 OldName = State.Name,
                 NewName = newName,
             };
-            State.Apply(renamed);
-            Events.Add(renamed);
+            State.Apply(pointOfInterestRenamed);
+            Events.Add(pointOfInterestRenamed);
         }
     }
 

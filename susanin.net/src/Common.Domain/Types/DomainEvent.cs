@@ -14,13 +14,23 @@ public abstract class DomainEvent<T>
     /// Конструктор <see cref="DomainEvent{T}"/>
     /// </summary>
     /// <param name="id">Идентификатор события</param>
-    protected DomainEvent(Guid? id = default)
+    protected DomainEvent(Id<DomainEvent<T>>? id = default)
     {
-        Id = id ?? Guid.NewGuid();
+        Id = id ?? new Id<DomainEvent<T>>(Guid.NewGuid());
     }
 
     /// <summary>
     /// Идентификатор события
     /// </summary>
-    public Guid Id { get; }
+    public Id<DomainEvent<T>> Id { get; }
+
+    /// <summary>
+    /// <see cref="Id{T}"/>
+    /// </summary>
+    public required Id<T> EntityId { get; init; }
+
+    /// <summary>
+    /// Время создания события
+    /// </summary>
+    public DateTimeOffset CreatedAt { get; } = DateTimeOffset.UtcNow;
 }

@@ -12,7 +12,7 @@ public interface IEntityState<T>
     /// <summary>
     /// Идентификатор сущности
     /// </summary>
-    public EntityId<T> Id { get; }
+    public Id<T> Id { get; }
 
     /// <summary>
     /// Применение события <see cref="DomainEvent{T}"/>
