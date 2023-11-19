@@ -5,6 +5,7 @@ using FluentAssertions;
 using NSubstitute;
 using SusanIn.POI.Domain.Models;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Xunit;
@@ -60,7 +61,7 @@ public class PointOfInterestTests
     }
 
     /// <summary>
-    /// Тестирование загрузки <see cref="PointOfInterest"/> из <see cref="IDomainEventRepository{T}"/>
+    /// Тестирование загрузки <see cref="PointOfInterest"/> с помощью <see cref="IDomainEventRepository{T}"/>
     /// </summary>
     /// <returns><see cref="Task{TResult}"/></returns>
     [Fact]
@@ -103,5 +104,26 @@ public class PointOfInterestTests
             .Should().Be(id);
         pointOfInterest.State.Name
             .Should().Be("qwe");
+    }
+
+    /// <summary>
+    /// Тестирование сохранения <see cref="PointOfInterest"/> с помощью <see cref="IDomainEventRepository{T}"/>
+    /// </summary>
+    /// <returns><see cref="Task"/></returns>
+    [Fact]
+    public async Task PointOfInterestSaveTestAsync()
+    {
+        // arrange
+        var id = new Id<PointOfInterest>();
+        var name = "initial name";
+        var coordinates = new Coordinates(0, 0);
+        var pointOfInterest = PointOfInterest.Create(id, name, coordinates);
+        var repository = Substitute.For<IDomainEventRepository<PointOfInterest>>();
+
+        // act
+        await pointOfInterest.SaveAsync(repository);
+
+        // assert
+        await repository.Received().SaveAsync(id, Arg.Is<IEnumerable<DomainEvent<PointOfInterest>>>(i => i.Any(@event => @event is PointOfInterestEvents.PointOfInterestCreated)));
     }
 }
