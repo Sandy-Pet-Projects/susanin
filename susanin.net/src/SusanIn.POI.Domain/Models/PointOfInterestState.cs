@@ -40,6 +40,8 @@ public sealed class PointOfInterestState : IEntityState<PointOfInterest>
             default:
                 throw new ArgumentOutOfRangeException(nameof(@event));
         }
+
+        Validate();
     }
 
     /// <inheritdoc cref="IEntityState{T}.Validate"/>

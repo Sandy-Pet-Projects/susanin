@@ -11,6 +11,9 @@ namespace SusanIn.POI.Domain.Models;
 /// </summary>
 public class PointOfInterest : IEntity<PointOfInterest>
 {
+    private readonly List<DomainEvent<PointOfInterest>> _events;
+    private int _version;
+
     /// <summary>
     /// Конструктор <see cref="PointOfInterest"/>
     /// </summary>
@@ -19,7 +22,8 @@ public class PointOfInterest : IEntity<PointOfInterest>
     {
         Id = id;
         State = new PointOfInterestState();
-        Events = new List<DomainEvent<PointOfInterest>>();
+        _events = new List<DomainEvent<PointOfInterest>>();
+        _version = 0;
     }
 
     /// <inheritdoc />
@@ -29,11 +33,6 @@ public class PointOfInterest : IEntity<PointOfInterest>
     /// <see cref="PointOfInterestState"/>
     /// </summary>
     public PointOfInterestState State { get; }
-
-    /// <summary>
-    /// Коллекция <see cref="DomainEvent{T}"/>
-    /// </summary>
-    private List<DomainEvent<PointOfInterest>> Events { get; }
 
     /// <summary>
     /// Создание <see cref="PointOfInterest"/>
@@ -53,10 +52,9 @@ public class PointOfInterest : IEntity<PointOfInterest>
             Name = name,
             Coordinate = coordinates,
         };
-        pointOfInterest.Events.Add(pointOfInterestCreated);
+        pointOfInterest._events.Add(pointOfInterestCreated);
 
         pointOfInterest.State.Apply(pointOfInterestCreated);
-        pointOfInterest.State.Validate();
 
         return pointOfInterest;
     }
@@ -86,7 +84,7 @@ public class PointOfInterest : IEntity<PointOfInterest>
     /// <returns><see cref="Task"/></returns>
     public async Task SaveAsync(IDomainEventRepository<PointOfInterest> repository)
     {
-        await repository.SaveAsync(Id, Events);
+        await repository.SaveAsync(Id, _version, _events);
     }
 
     /// <summary>
@@ -105,7 +103,7 @@ public class PointOfInterest : IEntity<PointOfInterest>
                 NewName = newName,
             };
             State.Apply(pointOfInterestRenamed);
-            Events.Add(pointOfInterestRenamed);
+            _events.Add(pointOfInterestRenamed);
         }
     }
 
@@ -116,5 +114,6 @@ public class PointOfInterest : IEntity<PointOfInterest>
     private void Apply(DomainEvent<PointOfInterest> @event)
     {
         State.Apply(@event);
+        _version++;
     }
 }

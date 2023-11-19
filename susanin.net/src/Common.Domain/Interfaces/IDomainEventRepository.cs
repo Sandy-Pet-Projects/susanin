@@ -22,8 +22,8 @@ public interface IDomainEventRepository<T>
     /// Сохранение коллекции <see cref="DomainEvent{T}"/> в хранилище
     /// </summary>
     /// <param name="id"><see cref="Id{T}"/></param>
+    /// <param name="version">Версия <see cref="IEntity{T}"/></param>
     /// <param name="events">Коллекция <see cref="DomainEvent{T}"/></param>
     /// <returns><see cref="Task{TResult}"/></returns>
-    // todo добавить версию сущности
-    public Task SaveAsync(Id<T> id, IEnumerable<DomainEvent<T>> events);
+    public Task SaveAsync(Id<T> id, int version, IEnumerable<DomainEvent<T>> events);
 }

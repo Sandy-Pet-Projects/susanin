@@ -4,6 +4,7 @@ using Common.Domain.ValueObjects;
 using FluentAssertions;
 using NSubstitute;
 using SusanIn.POI.Domain.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
@@ -124,6 +125,67 @@ public class PointOfInterestTests
         await pointOfInterest.SaveAsync(repository);
 
         // assert
-        await repository.Received().SaveAsync(id, Arg.Is<IEnumerable<DomainEvent<PointOfInterest>>>(i => i.Any(@event => @event is PointOfInterestEvents.PointOfInterestCreated)));
+        await repository.Received()
+            .SaveAsync(
+                id: Arg.Is<Id<PointOfInterest>>(i => i == id),
+                version: Arg.Is<int>(i => i == 0),
+                events: Arg.Is<IEnumerable<DomainEvent<PointOfInterest>>>(i => i.Any(@event => @event is PointOfInterestEvents.PointOfInterestCreated)));
+    }
+
+    /// <summary>
+    /// Тестирование конфликта сохранения <see cref="PointOfInterest"/> с помощью &lt;see cref="IDomainEventRepository{T}"/&gt;
+    /// </summary>
+    /// <returns><see cref="Task"/></returns>
+    [Fact]
+    public async Task PointOfInterestSaveConflictTestAsync()
+    {
+        // arrange
+        var id = new Id<PointOfInterest>();
+        var repository = Substitute.For<IDomainEventRepository<PointOfInterest>>();
+        repository
+            .LoadAsync(Arg.Any<Id<PointOfInterest>>())
+            .Returns(info =>
+            {
+                var domainEvents = new List<DomainEvent<PointOfInterest>>()
+                {
+                    new PointOfInterestEvents.PointOfInterestCreated()
+                    {
+                        EntityId = info.Arg<Id<PointOfInterest>>(),
+                        Name = "initial name",
+                        Coordinate = new Coordinates(0, 0),
+                    }
+                };
+                return domainEvents;
+            });
+        var version = 1;
+        repository
+            .When(eventRepository => eventRepository.SaveAsync(Arg.Any<Id<PointOfInterest>>(), Arg.Any<int>(), Arg.Any<IEnumerable<DomainEvent<PointOfInterest>>>()))
+            .Do(info =>
+            {
+                if (version == info.ArgAt<int>(1))
+                {
+                    version += info.ArgAt<IEnumerable<DomainEvent<PointOfInterest>>>(2).Count();
+                }
+                else
+                {
+                    throw new Exception();
+                }
+            });
+
+        // act
+        var pointOfInterest1 = await PointOfInterest.LoadAsync(repository, id);
+        var pointOfInterest2 = await PointOfInterest.LoadAsync(repository, id);
+        pointOfInterest1.RenameTo("name1");
+        pointOfInterest2.RenameTo("name2");
+
+        // assert
+        await pointOfInterest1
+            .Awaiting(poi => poi.SaveAsync(repository))
+            .Should()
+            .NotThrowAsync<Exception>();
+        await pointOfInterest2
+            .Awaiting(poi => poi.SaveAsync(repository))
+            .Should()
+            .ThrowAsync<Exception>();
     }
 }
